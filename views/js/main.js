@@ -504,7 +504,7 @@ function updatePositions() {
 
   var scrollTop = document.body.scrollTop;
 
-  var items = document.querySelectorAll('.mover');
+  // var items = document.querySelectorAll('.mover');
   for (var i = 0; i < items.length; i++) {
     var phase = Math.sin((scrollTop / 1250) + (i % 5));
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
@@ -539,3 +539,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   updatePositions();
 });
+
+// Initialze the array of pizza on page load (to avoid querying DOM for each frame)
+var items = document.querySelectorAll('.mover');

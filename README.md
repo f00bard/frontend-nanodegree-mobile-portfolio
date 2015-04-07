@@ -19,3 +19,4 @@ pizza.html JS
 In order to speed up page rendering and provide for 60 FPS performance the following changes were made:
 
 - Store document.body.scrollTop in a local variable to avoid reevaluating the DOM for each Math.sin call in updatePositions()
+- Store array of pizzas in array after generating all pizzas to avoid requerying the DOM for each call to updatePositions()
