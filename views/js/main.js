@@ -453,9 +453,12 @@ var resizePizzas = function(size) {
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
     window.performance.mark("mark_start_changePizzaSizes");
+
+    // result of determineDx is the same for all pizza elements, so no sense calling it more than once
+    var dx = determineDx(document.getElementsByClassName("randomPizzaContainer")[0], size);
+    var newwidth = (document.getElementsByClassName("randomPizzaContainer")[0].offsetWidth + dx) + 'px';
+
     for (var i = 0; i < document.getElementsByClassName("randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.getElementsByClassName("randomPizzaContainer")[i], size);
-      var newwidth = (document.getElementsByClassName("randomPizzaContainer")[i].offsetWidth + dx) + 'px';
       document.getElementsByClassName("randomPizzaContainer")[i].style.width = newwidth;
     }
     window.performance.mark("mark_end_changePizzaSizes");
@@ -467,12 +470,8 @@ var resizePizzas = function(size) {
   // User Timing API is awesome
   window.performance.mark("mark_end_resize");
   window.performance.measure("measure_pizza_resize", "mark_start_resize", "mark_end_resize");
-  window.performance.measure("measure_determineDx", "mark_start_determineDx", "mark_end_determineDx");
-  window.performance.measure("measure_changePizzaSizes", "mark_start_changePizzaSizes", "mark_end_changePizzaSizes");
   var timeToResize = window.performance.getEntriesByName("measure_pizza_resize");
   console.log("Time to resize pizzas: " + timeToResize[0].duration + "ms");
-  console.log("determineDx: ", window.performance.getEntriesByName("measure_determineDx"));
-  console.log("changePizzaSizes: ", window.performance.getEntriesByName("measure_changePizzaSizes"));
 };
 
 window.performance.mark("mark_start_generating"); // collect timing data
@@ -540,7 +539,9 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  var max = window.screen.availHeight / s * 8;
+
+  for (var i = 0; i < max; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
